@@ -1,20 +1,20 @@
-# @zero-dependency/tmp
+# @zero-dependency/storage
 
-[![](https://img.shields.io/npm/v/@zero-dependency/tmp)](https://npm.im/@zero-dependency/tmp)
-![](https://img.shields.io/npm/l/@zero-dependency/tmp)
+[![](https://img.shields.io/npm/v/@zero-dependency/storage)](https://npm.im/@zero-dependency/storage)
+![](https://img.shields.io/npm/l/@zero-dependency/storage)
 
 ## Installation
 
 ```sh
-npm install @zero-dependency/tmp
+npm install @zero-dependency/storage
 ```
 
 ```sh
-yarn add @zero-dependency/tmp
+yarn add @zero-dependency/storage
 ```
 
 ```sh
-pnpm add @zero-dependency/tmp
+pnpm add @zero-dependency/storage
 ```
 
 ## Usage
