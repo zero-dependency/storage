@@ -54,4 +54,19 @@ describe('@zero-dependency/storage', (test) => {
     const xdd = 'xdd'.repeat(9999999)
     expect(data.write(xdd)).toBe('')
   })
+
+  test('deserialize/serialize numbers', () => {
+    const storage2 = new LocalStorage<number>('num', 1, {
+      serialize(value) {
+        return value.toString()
+      },
+      deserialize(value) {
+        return Number(value)
+      }
+    })
+
+    expect(storage2.values).toBe(1)
+    storage2.write(2)
+    expect(storage2.values).toBe(2)
+  })
 })

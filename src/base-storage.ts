@@ -1,14 +1,32 @@
+import type { StorageOptions, Deserialize, Serialize } from "./types"
+
 export class BaseStorage<T> {
+  private readonly serialize: Serialize
+  private readonly deserialize: Deserialize
+
   constructor(
     private readonly key: string,
     public readonly initialValue: T,
-    private readonly storage: Storage
-  ) {}
+    private readonly storage: Storage,
+    options?: StorageOptions
+  ) {
+    this.serialize = (value) => {
+      return options?.serialize
+        ? options.serialize(value)
+        : JSON.stringify(value)
+    }
+
+    this.deserialize = (value) => {
+      return options?.deserialize
+        ? options.deserialize(value)
+        : JSON.parse(value)
+    }
+  }
 
   get values(): T {
     try {
       const value = this.storage.getItem(this.key)
-      return value ? JSON.parse(value) : this.initialValue
+      return value ? this.deserialize(value) : this.initialValue
     } catch {
       return this.initialValue
     }
@@ -22,7 +40,7 @@ export class BaseStorage<T> {
     }
 
     try {
-      this.storage.setItem(this.key, JSON.stringify(value))
+      this.storage.setItem(this.key, this.serialize(value))
     } catch (err) {
       console.error(
         `Failed to save (${this.key}):`,

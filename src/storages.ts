@@ -1,14 +1,14 @@
 import { BaseStorage } from './base-storage.js'
-import type { ExcludeFunction } from './types.js'
+import type { ExcludeFunction, StorageOptions } from './types.js'
 
 export class LocalStorage<T> extends BaseStorage<T> {
-  constructor(key: string, value: ExcludeFunction<T>) {
-    super(key, value, localStorage)
+  constructor(key: string, value: ExcludeFunction<T>, options?: StorageOptions) {
+    super(key, value, localStorage, options)
   }
 }
 
 export class SessionStorage<T> extends BaseStorage<T> {
-  constructor(key: string, value: ExcludeFunction<T>) {
-    super(key, value, sessionStorage)
+  constructor(key: string, value: ExcludeFunction<T>, options?: StorageOptions) {
+    super(key, value, sessionStorage, options)
   }
 }
