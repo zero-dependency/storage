@@ -57,10 +57,10 @@ describe('@zero-dependency/storage', (test) => {
 
   test('deserialize/serialize numbers', () => {
     const storage2 = new LocalStorage<number>('num', 1, {
-      serialize(value) {
+      encode(value) {
         return value.toString()
       },
-      deserialize(value) {
+      decode(value) {
         return Number(value)
       }
     })

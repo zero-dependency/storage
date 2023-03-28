@@ -1,8 +1,8 @@
-import type { StorageOptions, Deserialize, Serialize } from "./types"
+import type { Decode, Encode, StorageOptions } from './types.js'
 
 export class BaseStorage<T> {
-  private readonly serialize: Serialize
-  private readonly deserialize: Deserialize
+  private readonly encode: Encode
+  private readonly decode: Decode
 
   constructor(
     private readonly key: string,
@@ -10,23 +10,23 @@ export class BaseStorage<T> {
     private readonly storage: Storage,
     options?: StorageOptions
   ) {
-    this.serialize = (value) => {
-      return options?.serialize
-        ? options.serialize(value)
-        : JSON.stringify(value)
+    this.encode = (value) => {
+      return options?.encode ? options.encode(value) : JSON.stringify(value)
     }
 
-    this.deserialize = (value) => {
-      return options?.deserialize
-        ? options.deserialize(value)
-        : JSON.parse(value)
+    this.decode = (value) => {
+      return options?.decode ? options.decode(value) : JSON.parse(value)
+    }
+
+    if (!this.exists()) {
+      this.write(this.initialValue)
     }
   }
 
   get values(): T {
     try {
       const value = this.storage.getItem(this.key)
-      return value ? this.deserialize(value) : this.initialValue
+      return value ? this.decode(value) : this.initialValue
     } catch {
       return this.initialValue
     }
@@ -40,7 +40,7 @@ export class BaseStorage<T> {
     }
 
     try {
-      this.storage.setItem(this.key, this.serialize(value))
+      this.storage.setItem(this.key, this.encode(value))
     } catch (err) {
       console.error(
         `Failed to save (${this.key}):`,
@@ -50,6 +50,10 @@ export class BaseStorage<T> {
     }
 
     return value
+  }
+
+  exists(): boolean {
+    return this.storage.getItem(this.key) !== null
   }
 
   reset(): void {
