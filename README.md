@@ -19,3 +19,29 @@ pnpm add @zero-dependency/storage
 ```
 
 ## Usage
+
+```ts
+import { LocalStorage } from '@zero-dependency/storage'
+
+interface User {
+  id: number
+  name: string
+}
+
+const storageKey = 'users'
+const storage = new LocalStorage<User[]>(storageKey, [])
+console.log(storage.initialValue) // []
+
+storage.write((prevValues) => [...prevValues, { id: 1, name: 'John' }])
+console.log(storage.values) // [{ id: 1, name: 'John' }]
+
+storage.reset()
+console.log(storage.values) // []
+
+// https://developer.mozilla.org/en-US/docs/Web/API/Window/storage_event#examples
+window.addEventListener('storage', (event) => {
+  if (event.key === storageKey) {
+    // do something
+  }
+})
+```
