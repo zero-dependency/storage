@@ -1,9 +1,9 @@
 export type ExcludeFunction<T> = T extends Function ? never : T
 
-export interface StorageOptions {
-  encode: Encode
-  decode: Decode
+export interface StorageOptions<T> {
+  encode: Encode<T>
+  decode: Decode<T>
 }
 
-export type Encode = (value: any) => string
-export type Decode = (value: string) => any
+export type Encode<T> = (value: T) => string
+export type Decode<T> = (value: string) => T

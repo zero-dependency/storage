@@ -1,34 +1,46 @@
 import type { Decode, Encode, StorageOptions } from './types.js'
 
 export class BaseStorage<T> {
-  private readonly encode: Encode
-  private readonly decode: Decode
+  #key: string
+  #initialValue: T
+  #encode: Encode<T>
+  #decode: Decode<T>
+  #storage: Storage
 
   constructor(
-    private readonly key: string,
-    public readonly initialValue: T,
-    private readonly storage: Storage,
-    options?: StorageOptions
+    key: string,
+    initialValue: T,
+    storage: Storage,
+    options?: StorageOptions<T>
   ) {
-    this.encode = (value) => {
+    this.#key = key
+    this.#initialValue = initialValue
+    this.#storage = storage
+
+    this.#encode = (value) => {
       return options?.encode ? options.encode(value) : JSON.stringify(value)
     }
 
-    this.decode = (value) => {
+    this.#decode = (value) => {
       return options?.decode ? options.decode(value) : JSON.parse(value)
     }
 
     if (!this.exists()) {
-      this.write(this.initialValue)
+      this.write(this.#initialValue)
     }
+  }
+
+  get initialValue(): T {
+    return this.#initialValue
   }
 
   get values(): T {
     try {
-      const value = this.storage.getItem(this.key)
-      return value ? this.decode(value) : this.initialValue
-    } catch {
-      return this.initialValue
+      const value = this.#storage.getItem(this.#key)
+      return value ? this.#decode(value) : this.#initialValue
+    } catch (err) {
+      console.error(err)
+      return this.#initialValue
     }
   }
 
@@ -40,23 +52,20 @@ export class BaseStorage<T> {
     }
 
     try {
-      this.storage.setItem(this.key, this.encode(value))
+      this.#storage.setItem(this.#key, this.#encode(value))
     } catch (err) {
-      console.error(
-        `Failed to save (${this.key}):`,
-        (err as DOMException).message
-      )
-      return this.initialValue
+      console.error(err)
+      return this.#initialValue
     }
 
     return value
   }
 
   exists(): boolean {
-    return this.storage.getItem(this.key) !== null
+    return this.#storage.getItem(this.#key) !== null
   }
 
   reset(): void {
-    this.write(this.initialValue)
+    this.write(this.#initialValue)
   }
 }

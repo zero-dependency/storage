@@ -1,1 +1,1 @@
-export { LocalStorage, SessionStorage } from './storages.js'
+export * from './storages.js'
