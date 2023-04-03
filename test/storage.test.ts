@@ -17,6 +17,12 @@ describe('LocalStorage/SessionStorage', (test) => {
   test('should be defined', () => {
     expect(LocalStorage).toBeDefined()
     expect(SessionStorage).toBeDefined()
+
+    const localStorage = new LocalStorage('test', '')
+    expect(localStorage).toBeDefined()
+
+    const sessionStorage = new SessionStorage('test', '')
+    expect(sessionStorage).toBeDefined()
   })
 
   test('should be able to write and retrieve a value', () => {
