@@ -1,6 +1,6 @@
 import type { Decode, Encode, StorageOptions } from './types.js'
 
-export class BaseStorage<T> {
+export class WebStorage<T> {
   #key: string
   #initialValue: T
   #encode: Encode<T>
