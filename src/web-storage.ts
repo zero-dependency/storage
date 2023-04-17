@@ -25,16 +25,22 @@ export class WebStorage<T> {
       return options?.decode ? options.decode(value) : JSON.parse(value)
     }
 
-    if (!this.exists()) {
+    if (!this.has()) {
       this.write(this.#initialValue)
     }
   }
 
+  /**
+   * Get initial value of storage
+   */
   get initialValue(): T {
     return this.#initialValue
   }
 
-  get values(): T {
+  /**
+   * Read value from storage or return initial value if value does not exist in storage
+   */
+  get value(): T {
     try {
       const value = this.#storage.getItem(this.#key)
       return value ? this.#decode(value) : this.#initialValue
@@ -44,11 +50,15 @@ export class WebStorage<T> {
     }
   }
 
+  /**
+   * Write value to storage and return the value written
+   * @param value Value to write to storage
+   */
   write(value: T): T
   write(value: (prevValue: T) => T): T
   write(value: T | ((prevValue: T) => T)): T {
     if (value instanceof Function) {
-      value = value(this.values)
+      value = value(this.value)
     }
 
     try {
@@ -61,10 +71,17 @@ export class WebStorage<T> {
     return value
   }
 
-  exists(): boolean {
+  /**
+   * Check if the value exists in storage
+   * @returns true if the value exists in storage
+   */
+  has(): boolean {
     return this.#storage.getItem(this.#key) !== null
   }
 
+  /**
+   * Reset storage to initial value
+   */
   reset(): void {
     this.write(this.#initialValue)
   }

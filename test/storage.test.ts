@@ -27,17 +27,17 @@ describe('LocalStorage/SessionStorage', (test) => {
 
   test('should be able to write and retrieve a value', () => {
     const storage = new LocalStorage('test0', 1)
-    expect(storage.values).toEqual(1)
+    expect(storage.value).toEqual(1)
     expect(storage.initialValue).toEqual(1)
     expect(storage.write(2)).toEqual(2)
-    expect(storage.values).toEqual(2)
+    expect(storage.value).toEqual(2)
     expect(storage.write((prev) => prev + 1)).toEqual(3)
-    expect(storage.values).toEqual(3)
+    expect(storage.value).toEqual(3)
   })
 
   test('should be able to write initialValue and retrieve a value', () => {
     const storage = new LocalStorage<User>('test1', getUser(1))
-    expect(storage.values).toEqual(getUser(1))
+    expect(storage.value).toEqual(getUser(1))
   })
 
   test('should be able to write initialValue and retrieve a value with custom encode/decode', () => {
@@ -54,33 +54,33 @@ describe('LocalStorage/SessionStorage', (test) => {
       }
     })
 
-    expect(storage.values).toEqual(getUser(1))
+    expect(storage.value).toEqual(getUser(1))
   })
 
   test('should be reset to initialValue', () => {
     const storage = new LocalStorage<User>('test3', getUser(1))
     storage.write(getUser(2))
-    expect(storage.values).toEqual(getUser(2))
+    expect(storage.value).toEqual(getUser(2))
     storage.reset()
-    expect(storage.values).toEqual(getUser(1))
+    expect(storage.value).toEqual(getUser(1))
   })
 
-  test('should be return values to initialValue', () => {
+  test('should be return value to initialValue', () => {
     const storage = new LocalStorage<User[]>('test4', [])
     storage.write([getUser(1)])
     localStorage.removeItem('test4')
-    expect(storage.values).toEqual([])
+    expect(storage.value).toEqual([])
   })
 
   test('should be SyntaxError: Unexpected end of JSON input', () => {
     localStorage.setItem('test-syntax-error', '{') // set invalid data
     const storage = new LocalStorage<User[]>('test-syntax-error', [])
-    expect(storage.values).toEqual([]) // return initial data
+    expect(storage.value).toEqual([]) // return initial value
   })
 
   test('should be DOMException: Quota exceeded', () => {
     const storage = new LocalStorage('test-dom-exception', '')
     const data = 'some-data'.repeat(9999999)
-    expect(storage.write(data)).toBe('') // return initial data
+    expect(storage.write(data)).toBe('') // return initial value
   })
 })
