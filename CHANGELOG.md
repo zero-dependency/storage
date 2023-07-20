@@ -1,5 +1,11 @@
 # @zero-dependency/storage
 
+## 1.3.3
+
+### Patch Changes
+
+- 0ef9a43: chore: test npm provenance
+
 ## 1.3.2
 
 ### Patch Changes

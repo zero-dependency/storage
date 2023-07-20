@@ -1,6 +1,6 @@
 {
   "name": "@zero-dependency/storage",
-  "version": "1.3.2",
+  "version": "1.3.3",
   "description": "Web storage wrapper",
   "type": "module",
   "types": "./dist/index.d.ts",
