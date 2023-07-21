@@ -1,5 +1,11 @@
 # @zero-dependency/storage
 
+## 1.3.4
+
+### Patch Changes
+
+- ci: set node 18
+
 ## 1.3.3
 
 ### Patch Changes
