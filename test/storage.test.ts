@@ -1,4 +1,5 @@
 import { describe, expect, expectTypeOf } from 'vitest'
+
 import { LocalStorage, SessionStorage } from '../src/index.js'
 
 interface User {
