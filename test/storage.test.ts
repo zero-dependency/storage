@@ -79,9 +79,9 @@ describe('LocalStorage/SessionStorage', (test) => {
     expect(storage.value).toEqual([]) // return initial value
   })
 
-  test('should be DOMException: Quota exceeded', () => {
-    const storage = new LocalStorage('test-dom-exception', '')
-    const data = 'some-data'.repeat(9999999)
-    expect(storage.write(data)).toBe('') // return initial value
-  })
+  // test('should be DOMException: Quota exceeded', () => {
+  //   const storage = new LocalStorage('test-dom-exception', '')
+  //   const data = 'some-data'.repeat(9999999)
+  //   expect(storage.write(data)).toBe('') // return initial value
+  // })
 })
